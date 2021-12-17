@@ -1,20 +1,48 @@
 package com.bruno.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.bruno.helpdesk.domain.enums.Perfil;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-public abstract class Pessoa {
+import com.bruno.helpdesk.domain.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+
+@Entity // Informa que é uma entidade
+public abstract class Pessoa implements Serializable {	
 	
+	private static final long serialVersionUID = 1L;
+	
+	@Id // Informa que é uma primary key e sera auto incrementada 
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	protected Integer id;
+	
 	protected String nome;
+	
+	@Column(unique = true) // Informa que o cpf é unico no banco
 	protected String cpf;
-	protected String email;
+	
+	@Column(unique = true) // Informa que o email é unico no banco
+	protected String email;	
 	protected String senha;
+	
+	
+	@ElementCollection (fetch = FetchType.EAGER) // Informa que a lista de perfil ira vir junto com o usuario
+	@CollectionTable(name = "PERFIS") // Informa que no banco ira ter uma tabela chamada PERFIS	
 	protected Set<Integer> perfis = new HashSet<>();
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataCriacao = LocalDate.now();
 	
 	public Pessoa() {
