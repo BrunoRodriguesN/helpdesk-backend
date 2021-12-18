@@ -111,9 +111,6 @@ public class TecnicoDTO implements Serializable {
 		this.dataCriacao = dataCriacao;
 	}
 
-	
-	
-	
-	
+		 
 	
 }
