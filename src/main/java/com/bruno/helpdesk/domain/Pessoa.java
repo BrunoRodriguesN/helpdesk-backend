@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.bruno.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,6 +32,7 @@ public abstract class Pessoa implements Serializable {
 	
 	protected String nome;
 	
+	@CPF
 	@Column(unique = true) // Informa que o cpf é unico no banco
 	protected String cpf;
 	
