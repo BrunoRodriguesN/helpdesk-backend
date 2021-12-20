@@ -13,6 +13,7 @@ import com.bruno.helpdesk.domain.Tecnico;
 import com.bruno.helpdesk.domain.dtos.TecnicoDTO;
 import com.bruno.helpdesk.repositories.PessoaRepository;
 import com.bruno.helpdesk.repositories.TecnicoRepository;
+import com.bruno.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.bruno.helpdesk.services.exceptions.ObjectnotFoundException;
 
 @Service
@@ -48,6 +49,16 @@ public class TecnicoService {
 		return repository.save(oldObj);
 		
 	}
+	
+	public void delete(Integer id) {
+		Tecnico obj = findById(id);
+		if(obj.getChamados().size() > 0) {
+			throw new DataIntegrityViolationException("Tecnico possui ordens de serviço e não pode ser deletado!");
+		}		
+			repository.deleteById(id);		
+	}
+
+
 
 	private void validaPorCpfEEmail(TecnicoDTO objDTO) {
 		Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
@@ -61,6 +72,6 @@ public class TecnicoService {
 			}
 	}
 
-
+	
 
 }
