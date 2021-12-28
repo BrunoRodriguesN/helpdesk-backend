@@ -13,27 +13,21 @@ import com.bruno.helpdesk.domain.enums.Perfil;
 import com.bruno.helpdesk.domain.enums.Prioridade;
 import com.bruno.helpdesk.domain.enums.Status;
 import com.bruno.helpdesk.repositories.ChamadoRepository;
-import com.bruno.helpdesk.repositories.ClienteRepository;
 import com.bruno.helpdesk.repositories.PessoaRepository;
-import com.bruno.helpdesk.repositories.TecnicoRepository;
 
 @Service
 public class DBService {
 
 	@Autowired
-	private TecnicoRepository tecnicoRepository;
-	@Autowired
-
-	private PessoaRepository pessoaRepository;
-	@Autowired
 	private ChamadoRepository chamadoRepository;
 	@Autowired
+	private PessoaRepository pessoaRepository;
+	@Autowired
 	private BCryptPasswordEncoder encoder;
-	
 
 	public void instanciaDB() {
 
-		Tecnico tec1 = new Tecnico(null, "Bruno Rodrigues", "550.482.150-95", "bruno@mail.com", encoder.encode("123"));
+		Tecnico tec1 = new Tecnico(null, "Valdir Cezar", "550.482.150-95", "bruno@mail.com", encoder.encode("123"));
 		tec1.addPerfil(Perfil.ADMIN);
 		Tecnico tec2 = new Tecnico(null, "Richard Stallman", "903.347.070-56", "stallman@mail.com", encoder.encode("123"));
 		Tecnico tec3 = new Tecnico(null, "Claude Elwood Shannon", "271.068.470-54", "shannon@mail.com", encoder.encode("123"));
@@ -55,7 +49,5 @@ public class DBService {
 
 		pessoaRepository.saveAll(Arrays.asList(tec1, tec2, tec3, tec4, tec5, cli1, cli2, cli3, cli4, cli5));
 		chamadoRepository.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6));
-
 	}
-
 }

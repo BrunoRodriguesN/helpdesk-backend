@@ -13,7 +13,7 @@ import com.bruno.helpdesk.repositories.PessoaRepository;
 import com.bruno.helpdesk.security.UserSS;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService{
 	
 	@Autowired
 	private PessoaRepository repository;

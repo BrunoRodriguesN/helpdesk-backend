@@ -23,55 +23,48 @@ import com.bruno.helpdesk.security.JWTUtil;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig  extends WebSecurityConfigurerAdapter {
-	
-	
-	private static final String [] PUBLIC_MATCHERS = {"/h2-console/**"};
-	
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
+
 	@Autowired
 	private Environment env;
 	@Autowired
 	private JWTUtil jwtUtil;
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
+		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		
+
 		http.cors().and().csrf().disable();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
-		
-		http.authorizeRequests()
-			.antMatchers(PUBLIC_MATCHERS).permitAll()
-			.anyRequest().authenticated();
-		
+		http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
+
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-		
 	}
 
 	@Bean
-	CorsConfigurationSource conrsConfigurationSource() {
+	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
 		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
-		
 	}
-	
-	
+
 	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder () {
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 }

@@ -9,9 +9,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-
-//Gerar o token 
-
 @Component
 public class JWTUtil {
 	
@@ -20,18 +17,16 @@ public class JWTUtil {
 	
 	@Value("${jwt.secret}")
 	private String secret;
-	
+
 	public String generateToken(String email) {
 		return Jwts.builder()
 				.setSubject(email)
 				.setExpiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.compact();
-				
 	}
 
-	public boolean tokenvalido(String token) {
-		
+	public boolean tokenValido(String token) {
 		Claims claims = getClaims(token);
 		if(claims != null) {
 			String username = claims.getSubject();
@@ -43,7 +38,6 @@ public class JWTUtil {
 			}
 		}
 		return false;
-		
 	}
 
 	private Claims getClaims(String token) {
@@ -55,12 +49,10 @@ public class JWTUtil {
 	}
 
 	public String getUsername(String token) {
-
 		Claims claims = getClaims(token);
-		if(claims != null ) {
+		if(claims != null) {
 			return claims.getSubject();
 		}
 		return null;
 	}
-
 }
