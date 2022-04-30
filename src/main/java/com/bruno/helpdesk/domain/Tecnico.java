@@ -17,7 +17,7 @@ public class Tecnico extends Pessoa{
 
 	private static final long serialVersionUID = 1L;
 	
-	@JsonIgnore // protege contra serializacao
+	@JsonIgnore // protege contra serializacao ..
 	@OneToMany(mappedBy = "tecnico")
 	private List<Chamado> chamados = new ArrayList<>();
 
